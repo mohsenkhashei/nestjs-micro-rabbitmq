@@ -17,20 +17,40 @@ services:
     ports:
       - '3000:3000'
 
+  billing:
+    build:
+      context: .
+      dockerfile: ./apps/billing/Dockerfile
+      target: development
+    command: yarn run start:dev billing
+    env_file:
+      - ./apps/billing/.env
+    depends_on:
+      - mongodb-primary
+      - mongodb-secondary
+      - mongodb-arbiter
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+
   mongodb-primary:
-    image: docker.io/bitnami/mongodb:6.0
+    image: mongo
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongodb-primary
       - MONGODB_REPLICA_SET_MODE=primary
       - MONGODB_ROOT_PASSWORD=password123
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
     volumes:
-      - 'mongodb_master_data:/bitnami/mongodb'
+      - 'mongodb_master_data:/mongodb'
     ports:
       - '27017:27017'
 
   mongodb-secondary:
-    image: docker.io/bitnami/mongodb:6.0
+    image: mongo
     depends_on:
       - mongodb-primary
     environment:
@@ -41,7 +61,7 @@ services:
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
 
   mongodb-arbiter:
-    image: docker.io/bitnami/mongodb:6.0
+    image: mongo
     depends_on:
       - mongodb-primary
     environment:

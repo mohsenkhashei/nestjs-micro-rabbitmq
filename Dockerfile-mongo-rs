@@ -1,0 +1,10 @@
+FROM node:lts AS development
+
+WORKDIR /usr/src/app
+
+# COPY package.json ./
+
+
+RUN yarn global add run-rs 
+
+CMD [ "run-rs" ]

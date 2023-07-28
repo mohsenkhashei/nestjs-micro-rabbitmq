@@ -15,25 +15,17 @@ $ yarn install
 ## Running the app
 
 ```bash
-# development
-$ yarn run start
+# install MongoDB Replicaset:
+$ yarn global add run-rs
 
-# watch mode
-$ yarn run start:dev
+# run mongoDB
+$ run-rs
 
-# production mode
-$ yarn run start:prod
-```
+# run rabbitmq
+$ docker-compose up
 
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+# run each service
+$ yarn run start:dev auth
+$ yarn run start:dev billing
+$ yarn run start:dev orders
 ```

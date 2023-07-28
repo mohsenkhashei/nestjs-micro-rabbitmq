@@ -9,7 +9,7 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn run build orders
+RUN yarn run build auth
 
 
 FROM node:lts AS production
@@ -28,4 +28,4 @@ RUN yarn install --prod
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD [ "node", "dist/apps/orders/main" ]
+CMD [ "node", "dist/apps/auth/main" ]
